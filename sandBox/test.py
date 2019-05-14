@@ -24,6 +24,7 @@ def mahjong_pai():
     pai += [Tile("sangenpai", value, f"sangenpai_{value}.png")
             for value, label in enumerate(Tile.COLORS, 1)]
     pai *= 4
+
     return pai
 
 
