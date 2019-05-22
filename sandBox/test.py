@@ -14,6 +14,9 @@ class Tile:
     def __repr__(self):
         return f"Tile({repr(self.kind)}, {repr(self.value)}, {repr(self.pic)})"
 
+    def create_img_tag(self):
+        return f'<img src=/static/pic/{self.pic}>'
+
 
 def mahjong_pai():
     pai = [Tile(kind, value, f"{kind}_{value}.png")
@@ -28,8 +31,16 @@ def mahjong_pai():
     return pai
 
 
+
+
 yamahai = mahjong_pai()
 random.shuffle(yamahai)
+
+
+img_tags = [yamahai.pop(0).create_img_tag() for i in range(14)]
+
+''.join(img_tags)
+print(''.join(img_tags))
 print(yamahai)
 yamahai.sort(key=lambda hai: f'{hai.kind}{hai.value}')
 print(yamahai)

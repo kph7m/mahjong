@@ -13,40 +13,40 @@ class Tile:
     def __init__(self, kind, value, pic):
         self.kind = kind  # 麻雀牌の種類（萬子・筒子・索子・四風牌・三元牌）
         self.value = value  # 麻雀牌の値（1~9 東南西北白発中）
-        self.pic = pic  #画像ファイル名
+        self.pic = pic  # 画像ファイル名
 
     def __repr__(self):
-        return repr((self.kind, self.value, self.pic))
-
-    def create_img_tag(self):
-        return f'<img src=/static/pic/{self.pic}>'
-
-#山牌
-def mahjong_pai():
-    pai = [Tile(kind, value, f"{kind}_{value}.png")
-           for kind in Tile.NUMBERS
-           for value in range(1, 9+1)]
-    pai += [Tile("sufonpai", value, f"sufonpai_{value}.png")
-            for value, label in enumerate(Tile.WINDS, 1)]
-    pai += [Tile("sangenpai", value, f"sangenpai_{value}.png")
-            for value, label in enumerate(Tile.COLORS, 1)]
-    pai *= 4
-
-    random.shuffle(pai)
-    return pai
+        return f'({self.kind}, {self.value}, {self.pic})\n'
 
 
-yamahai = mahjong_pai()
+# 山牌　シャッフルされた１３６個のTileオブジェクトリストを返却
+def create_yamahai():
+    tiles = [Tile(kind, value, f"{kind}_{value}.png")
+             for kind in Tile.NUMBERS
+             for value in range(1, 9 + 1)]
+    tiles += [Tile("x_sufonpai", value, f"sufonpai_{value}.png")
+              for value, label in enumerate(Tile.WINDS, 1)]
+    tiles += [Tile("y_sangenpai", value, f"sangenpai_{value}.png")
+              for value, label in enumerate(Tile.COLORS, 1)]
+    tiles *= 4
+
+    random.shuffle(tiles)
+    return tiles
+
+
+yamahai = create_yamahai() #山牌作成
+
 
 @app.route('/')
 def main():
+    haipai = [yamahai.pop(0) for i in range(14)]  # 配牌
 
-    img_tags = ''
-    for i in range(14):
-        tile = yamahai.pop(0)  #山牌から一つ取り出す
-        img_tags = img_tags + tile.create_img_tag()#画像出力用のHTMLタグ作成
+    haipai.sort(key=lambda hai: f'{hai.kind}{hai.value}')  # 理牌
 
-    return img_tags
+
+
+
+    return ''.join(map(lambda tile: f'<img src=/static/pic/{tile.pic}>', haipai))  # 画像表示
 
 
 if __name__ == '__main__':
