@@ -68,6 +68,7 @@ class Mentsu:
 class NoMentsu(Exception):
     pass
 
+
 # 山牌　シャッフルされた１３６個のTileオブジェクトリストを返却
 def create_yamahai():
     tiles = [Tile(kind, str(value))
