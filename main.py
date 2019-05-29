@@ -36,14 +36,31 @@ def create_yamahai():
 
 yamahai = create_yamahai() #山牌作成
 
-
+test = [
+          Tile('manzu', '2', 'manzu_2.png')
+        , Tile('manzu', '3', 'manzu_3.png')
+        , Tile('manzu', '3', 'manzu_3.png')
+        , Tile('manzu', '3', 'manzu_3.png')
+        , Tile('manzu', '3', 'manzu_3.png')
+        , Tile('manzu', '4', 'manzu_4.png')
+        , Tile('manzu', '4', 'manzu_4.png')
+        , Tile('manzu', '5', 'manzu_5.png')
+        , Tile('manzu', '5', 'manzu_5.png')
+        , Tile('manzu', '5', 'manzu_5.png')
+        , Tile('manzu', '6', 'manzu_6.png')
+        , Tile('manzu', '6', 'manzu_6.png')
+        , Tile('manzu', '6', 'manzu_6.png')
+        , Tile('manzu', '6', 'manzu_6.png')
+        , Tile('manzu', '8', 'manzu_8.png')
+        , Tile('manzu', '8', 'manzu_8.png')
+    ]
 @app.route('/')
 def main():
     haipai = [yamahai.pop(0) for i in range(14)]  # 配牌
 
     haipai.sort(key=lambda hai: f'{hai.kind}{hai.value}')  # 理牌
 
-
+    test.sort(key=lambda hai: f'{hai.kind}{hai.value}')  # 理牌
 
 
     return ''.join(map(lambda tile: f'<img src=/static/pic/{tile.pic}>', haipai))  # 画像表示
