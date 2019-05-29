@@ -32,7 +32,7 @@ class Tile:
     def create_syuntu(self):
         if Tile.NUMBERS.contains(self.kind) and int(self.value) <= 7:
             return [Tile(self.kind, str(value))
-                    for value in range(self.value, self.value+3)]
+                    for value in range(self.value, self.value + 3)]
 
 class Agari:
     def __init__(self, janto, mentsu1, mentsu2, mentsu3, mentsu4):
