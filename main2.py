@@ -114,7 +114,9 @@ def main():
     print(l_unique)
 
     # 雀頭の種類
-    l_janto = sorted([x for x in set(haipai) if haipai.count(x) >= 2])
+    l_janto = [x for x in set(haipai) if haipai.count(x) > 1]
+
+    l_janto.sort(key=lambda hai: f'{hai.kind}{hai.value}')
     #    l_duplicate.sort(key=lambda hai: f'{hai.kind}{hai.value}')
     print(l_janto)
     for janto in l_janto:
@@ -122,7 +124,6 @@ def main():
 
         # 刻子の種類
         l_koutsu = [x for x in set(haipai) if haipai.count(x) >= 3]
-        print(f'刻子:{l_koutsu}')
 
         # 刻子が０個のパターン
         agari_hai.append(agari_koutsu0(haipai, janto))
@@ -130,7 +131,7 @@ def main():
         # 刻子が１個のパターン
         agari_hai.append(agari_koutsu1(haipai, janto, l_koutsu))
 
-        # 刻子が２個のパターン(刻子を3つ取得可能な場合にそこから２つ取得する場合を含む)
+        # 刻子が２個のパターン
         agari_hai.append(agari_koutsu2(l_koutsu, janto, l_koutsu))
 
         # 刻子が３個のパターン
@@ -139,7 +140,9 @@ def main():
         # 刻子が４個のパターン
         agari_hai.append(agari_koutsu4(l_koutsu, janto))
 
+    print(agari_hai)
 
+#刻子が０個のあがりパターン
 def agari_koutsu0(haipai, janto):
     hannteiyou = copy.deepcopy(haipai)
 
@@ -147,30 +150,30 @@ def agari_koutsu0(haipai, janto):
     hannteiyou.remove(janto)
 
     try:
-        one = find_one_syuntu(hannteiyou)
-        hannteiyou.remone(one.tiles[0])
-        hannteiyou.remone(one.tiles[1])
-        hannteiyou.remone(one.tiles[2])
+        first = find_one_syuntu(hannteiyou)
+        hannteiyou.remove(first.tiles[0])
+        hannteiyou.remove(first.tiles[1])
+        hannteiyou.remove(first.tiles[2])
 
-        two = find_one_syuntu(hannteiyou)
-        hannteiyou.remone(two.tiles[0])
-        hannteiyou.remone(two.tiles[1])
-        hannteiyou.remone(two.tiles[2])
+        second = find_one_syuntu(hannteiyou)
+        hannteiyou.remove(second[0])
+        hannteiyou.remove(second[1])
+        hannteiyou.remove(second[2])
 
-        three = find_one_syuntu(hannteiyou)
-        hannteiyou.remone(three.tiles[0])
-        hannteiyou.remone(three.tiles[1])
-        hannteiyou.remone(three.tiles[2])
+        third = find_one_syuntu(hannteiyou)
+        hannteiyou.remove(third[0])
+        hannteiyou.remove(third[1])
+        hannteiyou.remove(third[2])
 
-        four = find_one_syuntu(hannteiyou)
-        hannteiyou.remone(four.tiles[0])
-        hannteiyou.remone(four.tiles[1])
-        hannteiyou.remone(four.tiles[2])
+        fourth = find_one_syuntu(hannteiyou)
 
-        return Agari([janto * 2], one, two, three, four)
+        return Agari([janto * 2], first, second, third, fourth)
+
     except NoMentsu:
         return []
 
+
+#刻子が１個のあがりパターン
 def agari_koutsu1(haipai, l_koutsu, janto):
     if len(l_koutsu) < 1:
         return []
@@ -183,35 +186,32 @@ def agari_koutsu1(haipai, l_koutsu, janto):
     result=[]
     for koutsu in l_koutsu:
         try:
-            one = Mentsu([koutsu * 3], Mentsu.KIND[1])
-            hannteiyou.remone(one[0])
-            hannteiyou.remone(one[1])
-            hannteiyou.remone(one[2])
+            first = Mentsu([l_koutsu[0] * 3], Mentsu.KIND[1])
+            hannteiyou.remove(first[0])
+            hannteiyou.remove(first[1])
+            hannteiyou.remove(first[2])
 
-            two = find_one_syuntu(hannteiyou)
-            hannteiyou.remone(two[0])
-            hannteiyou.remone(two[1])
-            hannteiyou.remone(two[2])
+            second = find_one_syuntu(hannteiyou)
+            hannteiyou.remove(second[0])
+            hannteiyou.remove(second[1])
+            hannteiyou.remove(second[2])
 
-            three = find_one_syuntu(hannteiyou)
-            hannteiyou.remone(three[0])
-            hannteiyou.remone(three[1])
-            hannteiyou.remone(three[2])
+            third = find_one_syuntu(hannteiyou)
+            hannteiyou.remove(third[0])
+            hannteiyou.remove(third[1])
+            hannteiyou.remove(third[2])
 
-            four = find_one_syuntu(hannteiyou)
-            hannteiyou.remone(four[0])
-            hannteiyou.remone(four[1])
-            hannteiyou.remone(four[2])
+            fourth = find_one_syuntu(hannteiyou)
 
-            result.append(Agari([janto*2],one,two,three,four))
+            result.append(Agari([janto * 2], first, second, third, fourth))
 
         except NoMentsu:
-            pass
+            continue
 
     return result
 
 
-
+#刻子が２個のあがりパターン
 def agari_koutsu2(haipai, l_koutsu, janto):
     if len(l_koutsu) < 2:
         return []
@@ -225,33 +225,32 @@ def agari_koutsu2(haipai, l_koutsu, janto):
     for i in range(len(l_koutsu)):
         for j in range(i + 1, len(l_koutsu)):
             try:
-                one = Mentsu([l_koutsu[i] * 3], Mentsu.KIND[1])
-                hannteiyou.remone(one[0])
-                hannteiyou.remone(one[1])
-                hannteiyou.remone(one[2])
+                first = Mentsu([l_koutsu[0] * 3], Mentsu.KIND[1])
+                hannteiyou.remove(first[0])
+                hannteiyou.remove(first[1])
+                hannteiyou.remove(first[2])
 
-                two = Mentsu([l_koutsu[j] * 3], Mentsu.KIND[1])
-                hannteiyou.remone(two[0])
-                hannteiyou.remone(two[1])
-                hannteiyou.remone(two[2])
+                second = Mentsu([l_koutsu[1] * 3], Mentsu.KIND[1])
+                hannteiyou.remove(second[0])
+                hannteiyou.remove(second[1])
+                hannteiyou.remove(second[2])
 
-                three = find_one_syuntu(hannteiyou)
-                hannteiyou.remone(three[0])
-                hannteiyou.remone(three[1])
-                hannteiyou.remone(three[2])
+                third = find_one_syuntu(hannteiyou)
+                hannteiyou.remove(third[0])
+                hannteiyou.remove(third[1])
+                hannteiyou.remove(third[2])
 
-                four = find_one_syuntu(hannteiyou)
-                hannteiyou.remone(four[0])
-                hannteiyou.remone(four[1])
-                hannteiyou.remone(four[2])
-                result.append(Agari([janto * 2], one, two, three, four))
+                fourth = find_one_syuntu(hannteiyou)
+                
+                result.append(Agari([janto * 2], first, second, third, fourth))
 
             except NoMentsu:
-                pass
+                continue
 
     return result
 
 
+#刻子が３個のあがりパターン
 def agari_koutsu3(haipai, l_koutsu, janto):
     if len(l_koutsu) != 3:
         return []
@@ -262,31 +261,30 @@ def agari_koutsu3(haipai, l_koutsu, janto):
     hannteiyou.remove(janto)
 
     try:
-        one = Mentsu([l_koutsu[0] * 3], Mentsu.KIND[1])
-        hannteiyou.remone(one[0])
-        hannteiyou.remone(one[1])
-        hannteiyou.remone(one[2])
+        first = Mentsu([l_koutsu[0] * 3], Mentsu.KIND[1])
+        hannteiyou.remove(first[0])
+        hannteiyou.remove(first[1])
+        hannteiyou.remove(first[2])
 
-        two = [l_koutsu[1] * 3]
-        hannteiyou.remone(two[0])
-        hannteiyou.remone(two[1])
-        hannteiyou.remone(two[2])
+        second = Mentsu([l_koutsu[1] * 3], Mentsu.KIND[1])
+        hannteiyou.remove(second[0])
+        hannteiyou.remove(second[1])
+        hannteiyou.remove(second[2])
 
-        three = [l_koutsu[2] * 3]
-        hannteiyou.remone(three[0])
-        hannteiyou.remone(three[1])
-        hannteiyou.remone(three[2])
+        third = Mentsu([l_koutsu[2] * 3], Mentsu.KIND[1])
+        hannteiyou.remove(third[0])
+        hannteiyou.remove(third[1])
+        hannteiyou.remove(third[2])
 
-        four = find_one_syuntu(hannteiyou)
-        hannteiyou.remone(four[0])
-        hannteiyou.remone(four[1])
-        hannteiyou.remone(four[2])
+        fourth = find_one_syuntu(hannteiyou)
 
-        return Agari([janto * 2], one, two, three, four)
+        return Agari([janto * 2], first, second, third, fourth)
 
     except NoMentsu:
-        pass
+        return []
 
+
+#刻子が４個のあがりパターン
 def agari_koutsu4(l_koutsu, janto):
     if len(l_koutsu) != 4:
         return []
