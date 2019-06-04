@@ -112,17 +112,17 @@ class Kokushimusou:
     def __repr__(self):
         return f'{self.l_tile}'
 
-def judge(haipai):
+def judge(tehai):
     agari_hai = []
 
     # 雀頭の種類
-    l_janto = sorted([x for x in set(haipai) if haipai.count(x) >= 2], key=lambda hai: f'{hai.kind}{hai.value}')
+    l_janto = sorted([x for x in set(tehai) if tehai.count(x) >= 2], key=lambda hai: f'{hai.kind}{hai.value}')
     if len(l_janto) == 0:
         return agari_hai
 
     # 国士無双
-    if check_kokushimusou(haipai, l_janto):
-        return Kokushimusou(haipai)
+    if check_kokushimusou(tehai, l_janto):
+        return Kokushimusou(tehai)
 
         # 七対子
     if len(l_janto) == 7:
@@ -130,7 +130,7 @@ def judge(haipai):
 
     # 通常役
     for janto in l_janto:
-        mentsu_kouho = copy.deepcopy(haipai)
+        mentsu_kouho = copy.deepcopy(tehai)
         mentsu_kouho.remove(janto)
         mentsu_kouho.remove(janto)
 
@@ -180,7 +180,7 @@ def agari_koutsu0(mentsu_kouho, janto):
 
         fourth = find_one_syuntu(hanteiyou)
 
-        return [Agari([janto * 2], first, second, third, fourth)]
+        return [Agari([janto for x in range(2)], first, second, third, fourth)]
 
     except NoMentsu:
         return []
@@ -300,23 +300,23 @@ def agari_koutsu4(janto, l_koutsu):
 
 
 # 国士無双のチェック（前提として雀頭があること）
-def check_kokushimusou(haipai, l_koutsu):
+def check_kokushimusou(tehai, l_koutsu):
     if len(l_koutsu) != 1:
         return []
 
-    if Tile(Tile.SUUPAI[0], '1') in haipai \
-            and Tile(Tile.SUUPAI[0], '9') in haipai \
-            and Tile(Tile.SUUPAI[1], '1') in haipai \
-            and Tile(Tile.SUUPAI[1], '9') in haipai \
-            and Tile(Tile.SUUPAI[2], '1') in haipai \
-            and Tile(Tile.SUUPAI[2], '9') in haipai \
-            and Tile(Tile.JIHAI[0], Tile.WINDS[0]) in haipai \
-            and Tile(Tile.JIHAI[0], Tile.WINDS[1]) in haipai \
-            and Tile(Tile.JIHAI[0], Tile.WINDS[2]) in haipai \
-            and Tile(Tile.JIHAI[0], Tile.WINDS[3]) in haipai \
-            and Tile(Tile.JIHAI[1], Tile.COLORS[0]) in haipai \
-            and Tile(Tile.JIHAI[1], Tile.COLORS[1]) in haipai \
-            and Tile(Tile.JIHAI[1], Tile.COLORS[2]) in haipai:
+    if Tile(Tile.SUUPAI[0], '1') in tehai \
+            and Tile(Tile.SUUPAI[0], '9') in tehai \
+            and Tile(Tile.SUUPAI[1], '1') in tehai \
+            and Tile(Tile.SUUPAI[1], '9') in tehai \
+            and Tile(Tile.SUUPAI[2], '1') in tehai \
+            and Tile(Tile.SUUPAI[2], '9') in tehai \
+            and Tile(Tile.JIHAI[0], Tile.WINDS[0]) in tehai \
+            and Tile(Tile.JIHAI[0], Tile.WINDS[1]) in tehai \
+            and Tile(Tile.JIHAI[0], Tile.WINDS[2]) in tehai \
+            and Tile(Tile.JIHAI[0], Tile.WINDS[3]) in tehai \
+            and Tile(Tile.JIHAI[1], Tile.COLORS[0]) in tehai \
+            and Tile(Tile.JIHAI[1], Tile.COLORS[1]) in tehai \
+            and Tile(Tile.JIHAI[1], Tile.COLORS[2]) in tehai:
         return True
 
 
