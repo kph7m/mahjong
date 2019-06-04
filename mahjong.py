@@ -25,6 +25,17 @@ class Tile:
     def __hash__(self):
         return hash(self.pic)
 
+    def sort_info(self):
+        if Tile.SUUPAI[0] == self.kind:
+            return f'0_{self.value}'
+        elif Tile.SUUPAI[1] == self.kind:
+            return f'1_{self.value}'
+        elif Tile.SUUPAI[2] == self.kind:
+            return f'2_{self.value}'
+        elif Tile.JIHAI[0] == self.kind:
+            return f'3_{self.value}'
+        elif Tile.JIHAI[1] == self.kind:
+            return f'4_{self.value}'
 
 # 山牌　シャッフルされた１３６個のTileオブジェクトリストを返却
 def create_yamahai():
@@ -37,6 +48,8 @@ def create_yamahai():
               for value, label in enumerate(Tile.COLORS, 1)]
     tiles *= 4
 
+    random.shuffle(tiles)
+    random.shuffle(tiles)
     random.shuffle(tiles)
     return tiles
 
@@ -108,7 +121,7 @@ def judge(haipai):
         return agari_hai
 
     # 国士無双
-    if check_kokushimusou(haipai):
+    if check_kokushimusou(haipai, l_janto):
         return Kokushimusou(haipai)
 
         # 七対子
@@ -142,7 +155,7 @@ def judge(haipai):
         # 刻子が４個のパターン
         agari_hai.extend(agari_koutsu4(janto, l_koutsu))
 
-    return agari_hai
+    return len(agari_hai) > 0
 
 
 # 刻子が０個のあがりパターン
@@ -287,7 +300,10 @@ def agari_koutsu4(janto, l_koutsu):
 
 
 # 国士無双のチェック（前提として雀頭があること）
-def check_kokushimusou(haipai):
+def check_kokushimusou(haipai, l_koutsu):
+    if len(l_koutsu) != 1:
+        return []
+
     if Tile(Tile.SUUPAI[0], '1') in haipai \
             and Tile(Tile.SUUPAI[0], '9') in haipai \
             and Tile(Tile.SUUPAI[1], '1') in haipai \
