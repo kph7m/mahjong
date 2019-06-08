@@ -1,5 +1,6 @@
 import random
 import copy
+import re
 
 
 # 麻雀牌のクラス
@@ -37,6 +38,7 @@ class Tile:
         elif Tile.JIHAI[1] == self.kind:
             return f'4_{self.value}'
 
+
 # 山牌　シャッフルされた１３６個のTileオブジェクトリストを返却
 def create_yamahai():
     tiles = [Tile(kind, str(value))
@@ -53,6 +55,12 @@ def create_yamahai():
     random.shuffle(tiles)
     return tiles
 
+
+# pic(画像ファイル名)からTileオブジェクトを作成
+def tile_from_pic(pic):
+    kind = re.search('^.*(?=_)', pic).group()
+    value = re.search('(?<=_).*(?=\.)', pic).group()
+    return Tile(kind, value)
 
 # 通常あがり牌
 class Agari:
@@ -112,6 +120,8 @@ class Kokushimusou:
     def __repr__(self):
         return f'{self.l_tile}'
 
+
+# あがり判定
 def judge(tehai):
     agari_hai = []
 
@@ -398,13 +408,13 @@ def test():
                     '56666777888899', '11555566777889', '55566667778899', '11112233344577',
                     '22223344455677', '11555677788899']:
         l_haipai.append([Tile('manzu', value)
-                  for value in list(pattern)])
+                         for value in list(pattern)])
     l_haipai.append(
-            [Tile(Tile.SUUPAI[0], '1'), Tile(Tile.SUUPAI[0], '9'), Tile(Tile.SUUPAI[1], '1'), Tile(Tile.SUUPAI[1], '9'),
-             Tile(Tile.SUUPAI[2], '1'), Tile(Tile.SUUPAI[2], '9'), Tile(Tile.JIHAI[0], Tile.WINDS[0]),
-             Tile(Tile.JIHAI[0], Tile.WINDS[1]), Tile(Tile.JIHAI[0], Tile.WINDS[2]), Tile(Tile.JIHAI[0], Tile.WINDS[3]),
-             Tile(Tile.JIHAI[1], Tile.COLORS[0]), Tile(Tile.JIHAI[1], Tile.COLORS[1]),
-             Tile(Tile.JIHAI[1], Tile.COLORS[2]), Tile(Tile.SUUPAI[0], '1')])
+        [Tile(Tile.SUUPAI[0], '1'), Tile(Tile.SUUPAI[0], '9'), Tile(Tile.SUUPAI[1], '1'), Tile(Tile.SUUPAI[1], '9'),
+         Tile(Tile.SUUPAI[2], '1'), Tile(Tile.SUUPAI[2], '9'), Tile(Tile.JIHAI[0], Tile.WINDS[0]),
+         Tile(Tile.JIHAI[0], Tile.WINDS[1]), Tile(Tile.JIHAI[0], Tile.WINDS[2]), Tile(Tile.JIHAI[0], Tile.WINDS[3]),
+         Tile(Tile.JIHAI[1], Tile.COLORS[0]), Tile(Tile.JIHAI[1], Tile.COLORS[1]),
+         Tile(Tile.JIHAI[1], Tile.COLORS[2]), Tile(Tile.SUUPAI[0], '1')])
     for haipai in l_haipai:
         print(f'配牌:{haipai}')
         print(f'上り:{judge(haipai)}')

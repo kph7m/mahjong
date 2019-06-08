@@ -16,7 +16,7 @@
                 {% for tile in sutehai %}{% if ((loop.index - 1) % 9) == 0 %}<br>{% endif %}<img src=/static/pic/{{tile.pic}}>{% endfor %}
             </div>
         {% endif %}
-        <div class="haipai">{% for tile in tehai %}{% if loop.last %}&nbsp;{% endif %}<a href="#" onclick="change.dahai.value = '{{tile.pic}}';change.submit();"><img src=/static/pic/{{tile.pic}}></a>{% endfor %}</div>
+        <div class="tehai">{% for tile in tehai %}{% if loop.last %}&nbsp;{% endif %}<a onclick="change.dahai.value = '{{tile.pic}}';change.submit();"><img src=/static/pic/{{tile.pic}}></a>{% endfor %}</div>
         <form name="change" action="{{ url_for('change') }}" method=post>
             {% for tile in sutehai %}
                 <input name="sutehai" type="hidden" value="{{tile.pic}}">

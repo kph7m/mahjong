@@ -3,24 +3,14 @@ import mahjong
 
 app = Flask(__name__)
 
-yamahai = []
-tehai = []
-sutehai = []
-
 # 配牌
 @app.route('/')
 def main():
-    global tehai
-    global yamahai
-    yamahai = mahjong.create_yamahai()
+    yamahai = mahjong.create_yamahai()  # 山牌
     tehai = [yamahai.pop(0) for i in range(13)]  # 配牌
 
     tehai.sort(key=lambda hai: hai.sort_info())  # 理牌
     tehai.append(yamahai.pop(0))  # 自摸
-
-    # 画像表示
-    # return ''.join(map(lambda i: f'<a href="/change/{i}"><img src=/static/pic/{tehai[i].pic}></a>',
-    #                    range(len(tehai))))
 
     return render_template('main.html', tehai=tehai, win=mahjong.judge(tehai))
 
@@ -28,19 +18,21 @@ def main():
 # 自摸
 @app.route('/change', methods=['POST'])
 def change():
-    dahai = request.form['dahai']
-    v_sutehai = request.form.getlist('sutehai')
-    v_tehai = request.form.getlist('tehai')
+    dahai = mahjong.tile_from_pic(request.form['dahai']) # 打牌
+    sutehai = [mahjong.tile_from_pic(pic) for pic in request.form.getlist('sutehai')] # 捨て牌
+    tehai = [mahjong.tile_from_pic(pic) for pic in request.form.getlist('tehai')] # 手牌
 
+    tehai.remove(dahai)# 手牌から打牌を削除
+    sutehai.append(dahai)# 捨て牌に打牌を追加
 
+    yamahai = mahjong.create_yamahai()  # 山牌再作成
+    for tile in sutehai + tehai:  # 山牌から捨て牌と手牌を削除
+        yamahai.remove(tile)
 
-    # sutehai.append(tehai.pop(position))  # 打牌
-    # tehai.sort(key=lambda hai: hai.sort_info())  # 理牌
-    #
-    # tehai.append(yamahai.pop(0))  # 自摸
+    tehai.sort(key=lambda hai: hai.sort_info())  # 理牌
+    tehai.append(yamahai.pop(0))  # 自摸
 
     return render_template('main.html', tehai=tehai, sutehai=sutehai, win=mahjong.judge(tehai))
-
 
 
 if __name__ == '__main__':
