@@ -1,0 +1,12 @@
+<@charset "UTF-8";>
+.win{
+
+}
+.sutehai{
+    background-color: green;
+}
+.haipai{
+    background-color: red;
+    position: absolute;
+    bottom: 0;
+}
