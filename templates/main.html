@@ -1,23 +1,30 @@
 <!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet"href="/static/css/main.css">
-    <title>ひとりまーじゃん</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet"href="/static/css/main.css">
+        <title>ひとりまーじゃん</title>
+    </head>
 
-<body>
-    {% if win %}
-        <div class="win">
-            <a href="/"><img src=/static/pic/win.png></a>
-        </div>
-    {% else %}
-        <div class="sutehai">
-            {% for tile in sutehai %}{% if ((loop.index - 1) % 9) == 0 %}<br>{% endif %}<img src=/static/pic/{{tile.pic}}>{% endfor %}
-        </div>
-    {% endif %}
-    <div class="haipai">
-        {% for tile in tehai %}{% if loop.last %}&nbsp;{% endif %}<a href="/change/{{loop.index -1}}"><img src=/static/pic/{{tile.pic}}></a>{% endfor %}
-    </div>
-</body>
+    <body>
+        {% if win %}
+            <div class="win">
+                <a href="/"><img src=/static/pic/win.png></a>
+            </div>
+        {% else %}
+            <div class="sutehai">
+                {% for tile in sutehai %}{% if ((loop.index - 1) % 9) == 0 %}<br>{% endif %}<img src=/static/pic/{{tile.pic}}>{% endfor %}
+            </div>
+        {% endif %}
+        <div class="haipai">{% for tile in tehai %}{% if loop.last %}&nbsp;{% endif %}<a href="#" onclick="change.dahai.value = '{{tile.pic}}';change.submit();"><img src=/static/pic/{{tile.pic}}></a>{% endfor %}</div>
+        <form name="change" action="{{ url_for('change') }}" method=post>
+            {% for tile in sutehai %}
+                <input name="sutehai" type="hidden" value="{{tile.pic}}">
+            {% endfor %}
+            {% for tile in tehai %}
+                <input name="tehai" type="hidden" value="{{tile.pic}}">
+            {% endfor %}
+            <input name="dahai" type="hidden" value="">
+        </form>
+    </body>
 </html>
