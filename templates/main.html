@@ -5,16 +5,19 @@
     <link rel="stylesheet"href="/static/css/main.css">
     <title>ひとりまーじゃん</title>
 </head>
+
 <body>
-    <div class="win">
-        {% if win %}
+    {% if win %}
+        <div class="win">
             <a href="/"><img src=/static/pic/win.png></a>
-        {% endif %}
-    </div>
-    <div class="sutehai">
-        {% for tile in sutehai %}{% if ((loop.index - 1) % 6) == 0 %}<br>{% endif %}<img src=/static/pic/{{tile.pic}}>{% endfor %}
-    </div>
+        </div>
+    {% else %}
+        <div class="sutehai">
+            {% for tile in sutehai %}{% if ((loop.index - 1) % 9) == 0 %}<br>{% endif %}<img src=/static/pic/{{tile.pic}}>{% endfor %}
+        </div>
+    {% endif %}
     <div class="haipai">
         {% for tile in tehai %}{% if loop.last %}&nbsp;{% endif %}<a href="/change/{{loop.index -1}}"><img src=/static/pic/{{tile.pic}}></a>{% endfor %}
     </div>
 </body>
+</html>

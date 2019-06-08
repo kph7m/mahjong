@@ -1,12 +1,12 @@
-<@charset "UTF-8";>
-.win{
-
+body{
+    background-color: mediumaquamarine;
 }
 .sutehai{
-    background-color: green;
+    text-align  : left;
+    margin-left : 100px;
+    margin-top  : 100px;
 }
 .haipai{
-    background-color: red;
     position: absolute;
     bottom: 0;
 }
