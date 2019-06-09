@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import random
 import copy
 import re
@@ -59,9 +58,8 @@ def create_yamahai():
 
 # pic(画像ファイル名)からTileオブジェクトを作成
 def tile_from_pic(pic):
-    kind = re.search('^.*(?=_)', pic).group()
-    value = re.search('(?<=_).*(?=\.)', pic).group()
-    return Tile(kind, value)
+    s = re.search(r'^(.+)_(.+)\.png$', pic).groups()
+    return Tile(s[0], s[1])
 
 # 通常あがり牌
 class Agari:
