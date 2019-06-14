@@ -31,7 +31,7 @@ def change():
     for tile in sutehai + tehai:  # 山牌から捨て牌と手牌を削除
         yamahai.remove(tile)
 
-    tehai.sort(key=lambda hai: hai.sort_info())  # 理牌
+    tehai.sort(key=lambda hai: hai.sort_info())  #  理牌
     tehai.append(yamahai.pop(0))  # 自摸
 
     return render_template('main.html', tehai=tehai, sutehai=sutehai, win=mahjong.judge(tehai))
