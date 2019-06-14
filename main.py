@@ -4,6 +4,7 @@ import os
 
 app = Flask(__name__)
 
+
 # 配牌
 @app.route('/')
 def main():
@@ -19,12 +20,12 @@ def main():
 # 自摸
 @app.route('/change', methods=['POST'])
 def change():
-    dahai = mahjong.tile_from_pic(request.form['dahai']) # 打牌
-    sutehai = [mahjong.tile_from_pic(pic) for pic in request.form.getlist('sutehai')] # 捨て牌
-    tehai = [mahjong.tile_from_pic(pic) for pic in request.form.getlist('tehai')] # 手牌
+    dahai = mahjong.tile_from_pic(request.form['dahai'])  # 打牌
+    sutehai = [mahjong.tile_from_pic(pic) for pic in request.form.getlist('sutehai')]  # 捨て牌
+    tehai = [mahjong.tile_from_pic(pic) for pic in request.form.getlist('tehai')]  # 手牌
 
-    tehai.remove(dahai)# 手牌から打牌を削除
-    sutehai.append(dahai)# 捨て牌に打牌を追加
+    tehai.remove(dahai)  # 手牌から打牌を削除
+    sutehai.append(dahai)  # 捨て牌に打牌を追加
 
     yamahai = mahjong.create_yamahai()  # 山牌再作成
     for tile in sutehai + tehai:  # 山牌から捨て牌と手牌を削除
